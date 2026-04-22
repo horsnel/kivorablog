@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[[redirects]]
+  from = "/post/:slug"
+  to = "/post/:slug.html"
+  status = 200
+
+[[redirects]]
+  from = "/:category"
+  to = "/:category.html"
+  status = 200
