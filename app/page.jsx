@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function BlogHome() {
   const featured   = getFeaturedPosts()
-  const allRecent  = getAllPosts().slice(0, 12)
+  const allRecent  = getAllPosts().slice(0, 20)
   const categories = Object.values(CATEGORIES)
 
   return (
@@ -141,7 +141,7 @@ export default function BlogHome() {
 
                 {/* Stacked smaller posts */}
                 <div className="flex flex-col gap-3">
-                  {rest.slice(0, 2).map(post => (
+                  {rest.slice(0, 3).map(post => (
                     <PostCard key={post.slug} post={post} />
                   ))}
 
