@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import PostCard from '@/components/PostCard'
 import CategoryNav from '@/components/CategoryNav'
 import { getAllPosts, getFeaturedPosts, getPostsByCategory, CATEGORIES } from '@/lib/posts'
@@ -10,7 +11,7 @@ export const metadata = {
 
 export default function BlogHome() {
   const featured   = getFeaturedPosts()
-  const allRecent  = getAllPosts().slice(0, 20)
+  const allRecent  = getAllPosts()
   const categories = Object.values(CATEGORIES)
 
   return (
@@ -96,14 +97,38 @@ export default function BlogHome() {
 
               {/* Posts layout: hero left + stacked right */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                {/* Hero post */}
+                {/* Hero post — with thumbnail */}
                 <div className="lg:col-span-2">
                   <Link href={`/post/${hero.slug}`} className="group block h-full">
                     <article className="bg-[#141414] border border-[#262626] hover:border-[#3a3a3a] rounded-2xl overflow-hidden transition-all h-full flex flex-col">
-                      {/* Accent bar */}
-                      <div className="h-1" style={{ background: cat.color }} />
+                      {/* Thumbnail */}
+                      {hero.thumbnail && (
+                        <div className="relative aspect-[16/9] overflow-hidden">
+                          <Image
+                            src={hero.thumbnail}
+                            alt={hero.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            sizes="(max-width: 768px) 100vw, 66vw"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+                          {/* Kivora logo badge */}
+                          <div className="absolute top-3 left-3 w-7 h-7 bg-[#0a0a0a]/80 backdrop-blur-sm border border-[#262626] rounded-lg flex items-center justify-center">
+                            <Image
+                              src="/images/kivora-logo.png"
+                              alt="Kivora"
+                              width={18}
+                              height={18}
+                              className="rounded"
+                            />
+                          </div>
+                          {/* Category color strip */}
+                          <div className="absolute bottom-0 left-0 right-0 h-1" style={{ background: cat.color }} />
+                        </div>
+                      )}
+                      {!hero.thumbnail && <div className="h-1 w-full" style={{ background: cat.color }} />}
 
-                      {/* Big typography card */}
+                      {/* Card body */}
                       <div className="p-7 md:p-8 flex-1 flex flex-col justify-between">
                         <div>
                           <div className="flex items-center gap-3 mb-5">
