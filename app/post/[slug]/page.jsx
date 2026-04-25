@@ -2,7 +2,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import PostCard from '@/components/PostCard'
-import { getPostBySlug, getRelatedPosts, getAllPosts, CATEGORIES, formatDate } from '@/lib/posts'
+import ShareButtons from '@/components/ShareButtons'
+import ViewCount from '@/components/ViewCount'
+import LikeButton from '@/components/LikeButton'
+import { getPostBySlug, getRelatedPosts, getCrossCategoryPosts, getAllPosts, CATEGORIES, formatDate } from '@/lib/posts'
 
 export async function generateStaticParams() {
   return getAllPosts().map(p => ({ slug: p.slug }))
@@ -125,6 +128,7 @@ export default function PostPage({ params }) {
 
   const cat     = CATEGORIES[post.category]
   const related = getRelatedPosts(post, 3)
+  const crossCat = getCrossCategoryPosts(post, 3)
   const html    = renderMarkdown(post.content, post.midImage)
 
   return (
@@ -167,6 +171,8 @@ export default function PostPage({ params }) {
             <span className="text-xs text-[#404040] font-mono">{post.readTime} min read</span>
             <span className="text-xs text-[#2e2e2e]">·</span>
             <span className="text-xs text-[#404040] font-mono">{formatDate(post.date)}</span>
+            <span className="text-xs text-[#2e2e2e]">·</span>
+            <ViewCount slug={post.slug} />
           </div>
 
           {/* Title */}
@@ -179,14 +185,21 @@ export default function PostPage({ params }) {
             {post.excerpt}
           </p>
 
-          {/* Author */}
-          <div className="flex items-center gap-3 au au2">
-            <div className="w-9 h-9 bg-[#141414] border border-[#262626] rounded-full flex items-center justify-center">
-              <span className="text-sm font-bold text-[#737373]">@</span>
+          {/* Author + Share + Like Row */}
+          <div className="flex items-center justify-between flex-wrap gap-4 au au2">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-[#141414] border border-[#262626] rounded-full flex items-center justify-center">
+                <span className="text-sm font-bold text-[#737373]">@</span>
+              </div>
+              <div>
+                <div className="text-sm font-medium">{post.author}</div>
+                <div className="text-xs text-[#404040]">{formatDate(post.date)}</div>
+              </div>
             </div>
-            <div>
-              <div className="text-sm font-medium">{post.author}</div>
-              <div className="text-xs text-[#404040]">{formatDate(post.date)}</div>
+
+            <div className="flex items-center gap-4">
+              <LikeButton slug={post.slug} />
+              <ShareButtons title={post.title} slug={post.slug} />
             </div>
           </div>
         </div>
@@ -217,7 +230,7 @@ export default function PostPage({ params }) {
               </div>
             )}
 
-            {/* Related posts */}
+            {/* Related posts (same category) */}
             {related.length > 0 && (
               <div className="bg-[#141414] border border-[#262626] rounded-2xl p-5">
                 <h3 className="text-xs font-semibold uppercase tracking-widest text-[#737373] mb-4">More in {cat.label}</h3>
@@ -231,6 +244,33 @@ export default function PostPage({ params }) {
                       </span>
                     </Link>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* Cross-category posts */}
+            {crossCat.length > 0 && (
+              <div className="bg-[#141414] border border-[#262626] rounded-2xl p-5">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-[#737373] mb-4">You might also like</h3>
+                <div className="divide-y divide-[#1a1a1a]">
+                  {crossCat.map(rp => {
+                    const rpCat = CATEGORIES[rp.category]
+                    return (
+                      <Link key={rp.slug} href={`/post/${rp.slug}`}
+                        className="group flex items-start gap-3 py-3.5 first:pt-0 last:pb-0">
+                        <div className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: rpCat?.color || '#737373' }} />
+                        <div className="min-w-0">
+                          <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full mr-1.5"
+                            style={{ color: rpCat?.color, background: rpCat?.dim }}>
+                            {rpCat?.label}
+                          </span>
+                          <span className="text-sm leading-snug text-[#737373] group-hover:text-white transition-colors line-clamp-2">
+                            {rp.title}
+                          </span>
+                        </div>
+                      </Link>
+                    )
+                  })}
                 </div>
               </div>
             )}
@@ -292,13 +332,25 @@ export default function PostPage({ params }) {
         </section>
       )}
 
-      {/* ── Related posts bottom ───────────────────────── */}
+      {/* ── Related posts bottom (same category) ───────────────────────── */}
       {related.length > 0 && (
         <section className="border-t border-[#141414] py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <h2 className="font-bold text-lg tracking-tight mb-6">Keep reading</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {related.map(rp => <PostCard key={rp.slug} post={rp} />)}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Cross-category recommendations ───────────────────────── */}
+      {crossCat.length > 0 && (
+        <section className="border-t border-[#141414] py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <h2 className="font-bold text-lg tracking-tight mb-6">Explore other categories</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {crossCat.map(rp => <PostCard key={rp.slug} post={rp} />)}
             </div>
           </div>
         </section>
