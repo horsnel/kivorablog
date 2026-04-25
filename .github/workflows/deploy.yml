@@ -3,8 +3,7 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -26,6 +25,15 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Create KV Namespaces
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: |
+            kv namespace create VIEWS_KV --preview false 2>/dev/null || true
+            kv namespace create LIKES_KV --preview false 2>/dev/null || true
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
