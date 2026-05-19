@@ -41,10 +41,6 @@ export default function CategoryPageTemplate({ slug }) {
             <p className="text-[#737373] text-lg leading-relaxed max-w-md">
               {cat.tagline}
             </p>
-
-            <p className="text-xs text-[#404040] font-mono mt-4">
-              {posts.length} article{posts.length !== 1 ? 's' : ''}
-            </p>
           </div>
         </div>
       </section>

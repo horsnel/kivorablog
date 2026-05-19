@@ -31,7 +31,7 @@ export default function BlogHome() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-[#141414] border border-[#262626] rounded-full px-3.5 py-1.5 mb-6 au">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-              <span className="text-xs text-[#737373] font-medium">{getAllPosts().length} articles · Free forever</span>
+              <span className="text-xs text-[#737373] font-medium">Free forever</span>
             </div>
 
             <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[0.95] mb-5 au au1">
@@ -56,10 +56,7 @@ export default function BlogHome() {
 
       {/* ── Featured Posts ────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
-        <div className="flex items-center justify-between mb-7">
-          <h2 className="font-bold text-lg tracking-tight">Featured</h2>
-          <span className="text-xs text-[#404040] font-mono">{featured.length} articles</span>
-        </div>
+        <h2 className="font-bold text-lg tracking-tight mb-7">Featured</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {featured.map((post, i) => (
@@ -190,10 +187,7 @@ export default function BlogHome() {
       {/* ── All Recent ────────────────────────────────────── */}
       <section className="border-t border-[#141414] py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between mb-7">
-            <h2 className="font-bold text-lg tracking-tight">Latest</h2>
-            <span className="text-xs text-[#404040] font-mono">{getAllPosts().length} total</span>
-          </div>
+          <h2 className="font-bold text-lg tracking-tight mb-7">Latest</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {allRecent.map(post => (
               <PostCard key={post.slug} post={post} />
@@ -211,13 +205,13 @@ export default function BlogHome() {
           <p className="text-[#737373] mb-8">
             One email per week. The most useful thing we published. No noise.
           </p>
-          <div className="flex gap-2 max-w-sm mx-auto">
+          <div className="flex flex-col sm:flex-row gap-2 max-w-sm mx-auto">
             <input
               type="email"
               placeholder="your@email.com"
-              className="flex-1 bg-[#141414] border border-[#262626] rounded-xl px-4 py-3 text-sm text-white placeholder-[#404040] outline-none focus:border-red-600 transition-colors"
+              className="w-full sm:flex-1 bg-[#141414] border border-[#262626] rounded-xl px-4 py-3 text-sm text-white placeholder-[#404040] outline-none focus:border-red-600 transition-colors"
             />
-            <button className="bg-[#dc2626] hover:bg-[#b91c1c] text-white px-5 py-3 rounded-xl text-sm font-semibold transition-colors press whitespace-nowrap">
+            <button className="w-full sm:w-auto bg-[#dc2626] hover:bg-[#b91c1c] text-white px-5 py-3 rounded-xl text-sm font-semibold transition-colors press whitespace-nowrap">
               Subscribe
             </button>
           </div>

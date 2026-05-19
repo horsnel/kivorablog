@@ -43,7 +43,7 @@ function renderMarkdown(content, midImage) {
     const [header, _sep, ...body] = tableRows
     const th = header.split('|').filter(Boolean).map(c => `<th>${c.trim()}</th>`).join('')
     const trs = body.map(row => `<tr>${row.split('|').filter(Boolean).map(c => `<td>${c.trim()}</td>`).join('')}</tr>`).join('')
-    html.push(`<table><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table>`)
+    html.push(`<div class="table-scroll"><table><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table></div>`)
     tableRows = []
     inTable = false
   }
