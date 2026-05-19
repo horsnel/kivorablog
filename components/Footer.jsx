@@ -9,9 +9,12 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-3">
-              <div className="w-6 h-6 bg-[#dc2626] rounded-md flex items-center justify-center">
-                <svg width="9" height="9" viewBox="0 0 14 14" fill="none"><path d="M3 7L6.5 3.5L10 7L6.5 10.5L3 7Z" fill="white"/></svg>
-              </div>
+              <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="8" fill="#dc2626"/>
+                <path d="M16 4L6 24L16 18Z" fill="white" opacity="0.95"/>
+                <path d="M16 4L26 24L16 18Z" fill="white" opacity="0.55"/>
+                <rect x="6" y="26" width="20" height="3" rx="1.5" fill="white" opacity="0.3"/>
+              </svg>
               <span className="font-bold text-sm">Ki<span className="text-red-500">vora</span> Blog</span>
             </Link>
             <p className="text-xs text-[#737373] leading-relaxed max-w-[180px]">
